@@ -1,6 +1,6 @@
 {
     "name" : "realejo/realejozf1",
-    "description" : "Realejo ZF1=>ZF2 Bridge",
+    "description" : "Realejo ZF1=>ZF3 Bridge",
     "license": "BSD-3-Clause",
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -16,7 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "RealejoZf1Test\\": "test/"
+            "RealejoZf1Test\\": "test/src"
         }
     }
 }
