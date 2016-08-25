@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c260865d9c8f394915a2e19ab5eaa68e",
-    "content-hash": "c1beb499f25794f6f3c28c8c4df428b5",
+    "hash": "c28261b5f0e0648c62939b0614e258db",
+    "content-hash": "6906624a5d8e47f536f3122be0437530",
     "packages": [
         {
             "name": "realejo/library-zf1",
@@ -210,9 +210,9 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
