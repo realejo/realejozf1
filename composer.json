@@ -1,14 +1,22 @@
 {
-  "name" : "realejo/realejozf1",
-  "description" : "Realejo ZF1=>ZF2 Bridge",
+    "name" : "realejo/realejozf1",
+    "description" : "Realejo ZF1=>ZF2 Bridge",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-    	"realejo/library-zf1" : "~1.5",
-    	"zendframework/zend-hydrator": "~2.0",
+        "realejo/library-zf1" : "~1.5",
+        "zendframework/zend-hydrator": "~2.0",
         "zendframework/zendframework1" : "~1.12"
     },
     "autoload": {
         "psr-4": {
             "RealejoZf1\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RealejoZf1Test\\": "test/"
         }
     }
 }
