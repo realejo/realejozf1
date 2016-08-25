@@ -1,0 +1,14 @@
+{
+  "name" : "realejo/realejozf1",
+  "description" : "Realejo ZF1=>ZF2 Bridge",
+    "require": {
+    	"realejo/library-zf1" : "~1.5",
+    	"zendframework/zend-hydrator": "~2.0",
+        "zendframework/zendframework1" : "~1.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "RealejoZf1\\": "src"
+        }
+    }
+}

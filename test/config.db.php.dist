@@ -1,0 +1,7 @@
+<?php
+return \Zend_Db::factory('mysqli', array(
+        'host'           => '127.0.0.1',
+        'username'       => 'root',
+        'password'       => '',
+        'dbname'         => 'test',
+    ));
