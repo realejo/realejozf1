@@ -1,7 +1,7 @@
 <?php
 namespace RealejoZf1Test\Service;
 
-use RealejoZf1\Utils\BaseTestCase;
+use RealejoZf1\Test\BaseTestCase;
 
 class ServiceTest extends BaseTestCase
 {

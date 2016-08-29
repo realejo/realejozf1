@@ -1,7 +1,7 @@
 <?php
 namespace RealejoZf1Test\Mapper;
 
-use RealejoZf1\Utils\BaseTestCase;
+use RealejoZf1\Test\BaseTestCase;
 use RealejoZf1\Stdlib\ArrayObject;
 use RealejoZf1\Mapper\MapperAbstract;
 

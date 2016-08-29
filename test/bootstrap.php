@@ -14,9 +14,6 @@ defined('APPLICATION_DATA')
 // Carrega o autoloader do composer
 $loader = require_once realpath(dirname(__FILE__) . '/../vendor') . '/autoload.php';
 
-// Carrega os namespaces para teste
-$loader->addPsr4("RealejoZf1Test\\", __DIR__ . "/src");
-
 // Carrega o autolader padrão do Zend (Zend_*)
 Zend_Loader_Autoloader::getInstance()->setFallbackAutoloader(true);
 

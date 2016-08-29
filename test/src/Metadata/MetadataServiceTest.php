@@ -3,7 +3,7 @@ namespace RealejoZf1Test\Metadata;
 
 use RealejoZf1\Metadata\MetadataService;
 use RealejoZf1\Stdlib\ArrayObject;
-use RealejoZf1\Utils\BaseTestCase;
+use RealejoZf1\Test\BaseTestCase;
 
 /**
  * MetadataService test case.

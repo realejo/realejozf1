@@ -39,4 +39,3 @@ class DateTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(Date::isFormat('dmY', $data ));
     }
 }
-
