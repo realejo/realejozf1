@@ -214,7 +214,7 @@ abstract class ServiceAbstract
     }
 
     /**
-     * Retorna vários Pdvs
+     * Retorna vários registros
      *
      * @param string|array oUsuario OPTIONAL An SQL WHERE clause
      * @param string|array oUsuario OPTIONAL An SQL ORDER clause.
@@ -244,7 +244,7 @@ abstract class ServiceAbstract
     }
 
     /**
-     * Retorna vários Pdvs
+     * Retorna um registro
      *
      * @param string|array oUsuario OPTIONAL An SQL WHERE clause
      * @param string|array oUsuario OPTIONAL An SQL ORDER clause.
@@ -274,7 +274,7 @@ abstract class ServiceAbstract
     }
 
     /**
-     * Retorna vários Pdvs
+     * Retorna vários registros associados pela chave
      *
      * @param string|array oUsuario OPTIONAL An SQL WHERE clause
      * @param string|array oUsuario OPTIONAL An SQL ORDER clause.
@@ -411,7 +411,7 @@ abstract class ServiceAbstract
 
     /**
      *
-     * @return \Pdv\Mapper\PdvMapper
+     * @return \RealejoZf1\Mapper\MapperAbstract
      */
     public function getMapper()
     {
@@ -424,6 +424,24 @@ abstract class ServiceAbstract
         }
 
         return $this->mapper;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseJoin()
+    {
+        return $this->getMapper()->getUseJoin();
+    }
+
+    /**
+     * @param boolean $useJoin
+     * @return self
+     */
+    public function setUseJoin($useJoin)
+    {
+        $this->getMapper()->setUseJoin($useJoin);
+        return $this;
     }
 
     /**

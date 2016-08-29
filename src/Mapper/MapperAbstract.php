@@ -45,7 +45,7 @@ abstract class MapperAbstract
     protected $tableJoinLeft = false;
 
     /**
-     * Join lefts que dfevem ser usados no mapper
+     * Join lefts que devem ser usados no mapper
      *
      * @var array
      */
@@ -720,33 +720,33 @@ abstract class MapperAbstract
     public function getTableSelect()
     {
         $select = $this->getTableGateway()
-                    ->select(\Zend_Db_Table::SELECT_WITH_FROM_PART)
-                    ->setIntegrityCheck(false);
+                       ->select(\Zend_Db_Table::SELECT_WITH_FROM_PART)
+                       ->setIntegrityCheck(false);
 
 
-            if (!empty($this->tableJoinLeft)) {
-                foreach($this->tableJoinLeft as $tableJoinLeft) {
-                    #TODO validar se tem os tres campos no array
+        if ($this->getUseJoin() && !empty($this->tableJoinLeft)) {
+            foreach($this->tableJoinLeft as $tableJoinLeft) {
+                #TODO validar se tem os tres campos no array
 
-                    if(empty($tableJoinLeft['table']) && !is_string($tableJoinLeft['table'])) {
-                        throw new \InvalidArgumentException('Tabela não definida em ' . get_class($this) . '::getTableSelect()');
-                    }
-
-                    if(empty($tableJoinLeft['condition']) && !is_string($tableJoinLeft['condition'])) {
-                        throw new \InvalidArgumentException('Condição não definida em ' . get_class($this) . '::getTableSelect()');
-                    }
-
-                    if(!empty($tableJoinLeft['columns']) && !is_array($tableJoinLeft['columns'])) {
-                        throw new \InvalidArgumentException('Colunas devem ser um array em ' . get_class($this) . '::getTableSelect()');
-                    }
-
-                    if(!empty($tableJoinLeft['schema']) && !is_string($tableJoinLeft['schema'])) {
-                        throw new \InvalidArgumentException('Schema devem ser uma string em ' . get_class($this) . '::getTableSelect()');
-                    }
-
-                    $select->joinLeft($tableJoinLeft['table'], $tableJoinLeft['condition'], $tableJoinLeft['columns'], $tableJoinLeft['schema']);
+                if (empty($tableJoinLeft['table']) && !is_string($tableJoinLeft['table'])) {
+                    throw new \InvalidArgumentException('Tabela não definida em ' . get_class($this) . '::getTableSelect()');
                 }
+
+                if (empty($tableJoinLeft['condition']) && !is_string($tableJoinLeft['condition'])) {
+                    throw new \InvalidArgumentException('Condição não definida em ' . get_class($this) . '::getTableSelect()');
+                }
+
+                if (isset($tableJoinLeft['columns']) && !empty($tableJoinLeft['columns']) && !is_array($tableJoinLeft['columns'])) {
+                    throw new \InvalidArgumentException('Colunas devem ser um array em ' . get_class($this) . '::getTableSelect()');
+                }
+
+                if (isset($tableJoinLeft['schema']) && !empty($tableJoinLeft['schema']) && !is_string($tableJoinLeft['schema'])) {
+                    throw new \InvalidArgumentException('Schema devem ser uma string em ' . get_class($this) . '::getTableSelect()');
+                }
+
+                $select->joinLeft($tableJoinLeft['table'], $tableJoinLeft['condition'], $tableJoinLeft['columns'], $tableJoinLeft['schema']);
             }
+        }
 
         return $select;
     }
@@ -811,7 +811,7 @@ abstract class MapperAbstract
         return $this->tableJoinLeft;
     }
 
- /**
+    /**
      * @param array $tableJoinLeft
      */
     public function setTableJoinLeft($tableJoinLeft)
@@ -819,7 +819,23 @@ abstract class MapperAbstract
         $this->tableJoinLeft = $tableJoinLeft;
     }
 
- /**
+    /**
+     * @return boolean
+     */
+    public function getUseJoin()
+    {
+        return $this->useJoin;
+    }
+
+    /**
+     * @param boolean $useJoin
+     */
+    public function setUseJoin($useJoin)
+    {
+        $this->useJoin = $useJoin;
+    }
+
+    /**
      *
      * @return string|array
      */
@@ -956,21 +972,5 @@ abstract class MapperAbstract
 
         return $this;
     }
- /**
-     * @return the $useJoin
-     */
-    public function getUseJoin()
-    {
-        return $this->useJoin;
-    }
-
- /**
-     * @param array $useJoin
-     */
-    public function setUseJoin($useJoin)
-    {
-        $this->useJoin = $useJoin;
-    }
-
 
 }
