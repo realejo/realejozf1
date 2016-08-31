@@ -64,7 +64,7 @@ class ArrayObject extends StdlibArrayObject
     {
         if (isset($data['metadata'])) {
             if (is_string($data['metadata'])) {
-                $data['metadata'] = (array) json_decode($data['metadata']);
+                $data['metadata'] = json_decode($data['metadata'], true);
             }
             if (!empty($data['metadata'])) {
                 $this->setMetadata($data['metadata']);
