@@ -2,13 +2,19 @@
 /**
  * Test case para as funcionalidades padrões
  *
+ * Apesar da calsse se chamar abstract ela não é exatamente um.
+ * É de propósito.
+ *
+ * Ela deveria estar dentro de \Test, mas esse namespace quebra o autocomplete
+ * do ZendStudio. Como essa biblioteca vai morrer em brave deixei dentro do \Utils mesmo
+ *
  * @link      http://bitbucket.org/bffc/excelencia
  * @copyright Copyright (c) 2014 Realejo (http://realejo.com.br)
  * @license   proprietary
  */
-namespace RealejoZf1\Test;
+namespace RealejoZf1\Utils;
 
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Zend_Db_Adapter_Abstract

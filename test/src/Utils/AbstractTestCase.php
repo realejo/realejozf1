@@ -1,12 +1,12 @@
 <?php
 namespace RealejoZf1Test;
 
-use RealejoZf1\Test\BaseTestCase as RealejoZf1BaseTestCase;
+use RealejoZf1\Utils\AbstractTestCase as AbstractClass;
 
 /**
  * Token test case.
  */
-class BaseTestCase extends RealejoZf1BaseTestCase
+class AbstractTestCase extends AbstractClass
 {
 
     /**

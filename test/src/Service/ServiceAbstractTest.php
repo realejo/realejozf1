@@ -1,9 +1,9 @@
 <?php
 namespace RealejoZf1Test\Service;
 
-use RealejoZf1\Test\BaseTestCase;
+use RealejoZf1\Utils\AbstractTestCase;
 
-class ServiceTest extends BaseTestCase
+class ServiceTest extends AbstractTestCase
 {
     /**
      * @var string

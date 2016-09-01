@@ -1,11 +1,11 @@
 <?php
 namespace RealejoZf1Test\Mapper;
 
-use RealejoZf1\Test\BaseTestCase;
+use RealejoZf1\Utils\AbstractTestCase;
 use RealejoZf1\Stdlib\ArrayObject;
 use RealejoZf1\Mapper\MapperAbstract;
 
-class MapperAbstractTest extends BaseTestCase
+class MapperAbstractTest extends AbstractTestCase
 {
     /**
      * @var string
