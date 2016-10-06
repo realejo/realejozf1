@@ -96,16 +96,34 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
 
         // Recupera o script para criar as tabelas
         foreach($tables as $tbl) {
-            $create = TEST_ROOT  . "/assets/sql/$tbl.create.sql";
-            if (!file_exists($create)) {
-                $this->fail("create não encontrado em $create");
-            }
-
             // Cria a tabela de usuários
-            $this->getAdapter()->query(file_get_contents($create));
+            $this->getAdapter()->query(file_get_contents($this->getSqlFile("$tbl.create.sql")));
         }
 
         return $this;
+    }
+
+    private function getSqlFile($file)
+    {
+        // Procura no raiz do teste
+        $path = TEST_ROOT  . "/assets/sql/$file";
+        if (file_exists($path)) {
+            return $path;
+        }
+
+        // Procura na pasta geral de teste do aplicativo
+        if (strpos(TEST_ROOT, '/modules') !== false) {
+            $path = substr(TEST_ROOT, 0, strpos(TEST_ROOT, '/modules')) . "/tests/assets/sql/$file";
+            if (file_exists($path)) {
+                return $path;
+            }
+            $path = substr(TEST_ROOT, 0, strpos(TEST_ROOT, '/modules')) . "/test/assets/sql/$file";
+            if (file_exists($path)) {
+                return $path;
+            }
+        }
+
+        $this->fail("Arquivo sql não encontrado em $path");
     }
 
     /**
@@ -125,10 +143,7 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
         if (!empty($tables)) {
             // Verifica se existem as tabelas
             foreach($tables as $tbl) {
-                $drop = TEST_ROOT . "/assets/sql/$tbl.drop.sql";
-                if (!file_exists($drop)) {
-                    $this->fail("drop não encontrado em $drop");
-                }
+                $this->getSqlFile("$tbl.drop.sql");
             }
 
             // Desabilita os indices e cosntrains para não dar erro
@@ -141,9 +156,7 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
 
             // Recupera o script para remover as tabelas
             foreach($tables as $tbl) {
-                $drop = TEST_ROOT . "/assets/sql/$tbl.drop.sql";
-                // Remove a tabela de usuários
-                $this->getAdapter()->query(file_get_contents($drop));
+                $this->getAdapter()->query(file_get_contents($this->getSqlFile("$tbl.drop.sql")));
             }
 
             $this->getAdapter()->query('SET SQL_MODE=@OLD_SQL_MODE;');
