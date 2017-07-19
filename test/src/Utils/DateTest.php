@@ -2,12 +2,13 @@
 
 namespace RealejoZf1Test\Utils;
 
+use PHPUnit\Framework\TestCase;
 use RealejoZf1\Utils\Date;
 
 /**
  * Date test case.
  */
-class DateTest extends \PHPUnit_Framework_TestCase
+class DateTest extends TestCase
 {
     /**
      * Tests Date::isFormat()

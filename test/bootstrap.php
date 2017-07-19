@@ -12,28 +12,19 @@ defined('APPLICATION_DATA')
     || define('APPLICATION_DATA', realpath(dirname(__FILE__) . '/assets/data'));
 
 // Carrega o autoloader do composer
-$loader = require_once realpath(dirname(__FILE__) . '/../vendor') . '/autoload.php';
+$loader = require realpath(dirname(__FILE__) . '/../vendor') . '/autoload.php';
 
-// Carrega o autolader padrão do Zend (Zend_*)
-Zend_Loader_Autoloader::getInstance()->setFallbackAutoloader(true);
+// Gambiarra para funcionar o PHPUnit 6.2
+class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
+class_alias('\PHPUnit\Framework\Error\Notice', '\PHPUnit_Framework_Error_Notice');
 
-// Procura pelas configurações do Semaphore
+// Procura pelas configurações do Semaphore CI
 if (isset($_SERVER['DATABASE_MYSQL_USERNAME'])) {
     // Define o banco de dados de testes
     \Zend_Db_Table::setDefaultAdapter(\Zend_Db::factory('mysqli', array(
         'host'           => '127.0.0.1',
         'username'       => $_SERVER['DATABASE_MYSQL_USERNAME'],
         'password'       => $_SERVER['DATABASE_MYSQL_PASSWORD'],
-        'dbname'         => 'test',
-    )));
-
-    // Procura pelas configurações do Codeship
-} elseif (isset($_SERVER['MYSQL_USER'])) {
-    // Define o banco de dados de testes
-    \Zend_Db_Table::setDefaultAdapter(\Zend_Db::factory('mysqli', array(
-        'host'           => '127.0.0.1',
-        'username'       => $_SERVER['MYSQL_USER'],
-        'password'       => $_SERVER['MYSQL_PASSWORD'],
         'dbname'         => 'test',
     )));
 

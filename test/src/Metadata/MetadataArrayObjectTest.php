@@ -1,12 +1,13 @@
 <?php
 namespace RealejoZf1Test\Metadata;
 
+use PHPUnit\Framework\TestCase;
 use RealejoZf1\Metadata\MetadataArrayObject;
 
 /**
  * MetadataArrayObject test case.
  */
-class MetadataArrayObjectTest extends \PHPUnit_Framework_TestCase
+class MetadataArrayObjectTest extends TestCase
 {
 
     public function testGettersSetters()

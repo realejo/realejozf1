@@ -17,39 +17,39 @@ class MapperAbstractTest extends AbstractTestCase
      */
     protected $tableKeyName = 'id';
 
-    protected $tables = array('album');
+    protected $tables = ['album'];
 
     /**
      * @var \RealejoZf1Test\Mapper\MapperConcrete
      */
     private $Mapper;
 
-    protected $defaultValues = array(
-        array(
+    protected $defaultValues = [
+        [
             'id' => 1,
             'artist' => 'Rush',
             'title' => 'Rush',
             'deleted' => 0
-        ),
-        array(
+        ],
+        [
             'id' => 2,
             'artist' => 'Rush',
             'title' => 'Moving Pictures',
             'deleted' => 0
-        ),
-        array(
+        ],
+        [
             'id' => 3,
             'artist' => 'Dream Theater',
             'title' => 'Images And Words',
             'deleted' => 0
-        ),
-        array(
+        ],
+        [
             'id' => 4,
             'artist' => 'Claudia Leitte',
             'title' => 'Exttravasa',
             'deleted' => 1
-        )
-    );
+        ]
+    ];
 
     /**
      * @return self

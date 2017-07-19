@@ -14,7 +14,9 @@
  */
 namespace RealejoZf1\Utils;
 
-class AbstractTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AbstractTestCase extends TestCase
 {
     /**
      * @var \Zend_Db_Adapter_Abstract
@@ -27,13 +29,6 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $tables = array();
-
-    public function __construct($tables = null)
-    {
-        if (!empty($tables) && is_array($tables)) {
-            $this->tables = $tables;
-        }
-    }
 
     /**
      * Prepares the environment before running ALL tests.

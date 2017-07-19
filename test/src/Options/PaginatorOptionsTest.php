@@ -2,12 +2,13 @@
 
 namespace RealejoZf1Test\Options;
 
+use PHPUnit\Framework\TestCase;
 use RealejoZf1\Options\PaginatorOptions;
 
 /**
  * PaginatorOptions test case.
  */
-class PaginatorOptionsTest extends \PHPUnit_Framework_TestCase
+class PaginatorOptionsTest extends TestCase
 {
 
     /**

@@ -519,7 +519,7 @@ abstract class ServiceAbstract
      */
     public function getAutoCleanCache()
     {
-        return $this->getMapper()->autoCleanCache;
+        return $this->getMapper()->getUseAllKeys();
     }
 
     /**
