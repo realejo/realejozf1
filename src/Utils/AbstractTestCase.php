@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractTestCase extends TestCase
 {
+    const SQL_CREATE = 'create';
+    const SQL_DROP = 'drop';
+
     /**
      * @var \Zend_Db_Adapter_Abstract
      */
@@ -35,7 +38,7 @@ class AbstractTestCase extends TestCase
      */
     public static function setUpBeforeClass()
     {
-        // Apaga todo o conteúdo do ApplICATION DATA
+        // Apaga todo o conteúdo do APPLICATION DATA
         $oTemp = new self();
         $oTemp->clearApplicationData();
     }
@@ -45,7 +48,7 @@ class AbstractTestCase extends TestCase
      */
     public static function tearDownAfterClass()
     {
-        // Apaga todo o conteúdo do ApplICATION DATA
+        // Apaga todo o conteúdo do APPLICATION DATA
         $oTemp = new self();
         $oTemp->clearApplicationData();
     }
@@ -62,7 +65,7 @@ class AbstractTestCase extends TestCase
     }
 
     /**
-     * @return BaseTestCase
+     * @return AbstractTestCase
      */
     public function setAdapter(\Zend_Db_Adapter_Abstract $adapter)
     {
@@ -72,7 +75,8 @@ class AbstractTestCase extends TestCase
     }
 
     /**
-     * @return BaseTestCase
+     * @param null $tables
+     * @return AbstractTestCase
      */
     public function createTables($tables = null)
     {
@@ -92,39 +96,73 @@ class AbstractTestCase extends TestCase
         // Recupera o script para criar as tabelas
         foreach($tables as $tbl) {
             // Cria a tabela de usuários
-            $this->getAdapter()->query(file_get_contents($this->getSqlFile("$tbl.create.sql")));
+            $this->getAdapter()->query(file_get_contents($this->getSqlFile($tbl, self::SQL_CREATE)));
         }
 
         return $this;
     }
 
-    private function getSqlFile($file)
+    /**
+     * @param string $file
+     * @param string $sqlAction
+     * @return string|false
+     */
+    private function getSqlFile($file, $sqlAction)
     {
-        // Procura no raiz do teste
-        $path = TEST_ROOT  . "/assets/sql/$file";
-        if (file_exists($path)) {
-            return $path;
+        if ($sqlAction === self::SQL_CREATE) {
+
+            // Procura primeiro na pasta do modulo caso queria substituir a do geral
+            if (strpos(TEST_ROOT, '/modules') !== false) {
+                $modulePath = substr(TEST_ROOT, 0, strpos(TEST_ROOT, '/modules'));
+                $paths[] = "$modulePath/tests/assets/sql/$file.sql";
+                $paths[] = "$modulePath/tests/assets/sql/$file.create.sql";
+            }
+
+            // Procura na pasta geral de teste do aplicativo
+            $paths = [
+                TEST_ROOT . "/assets/sql/$file.sql",
+                TEST_ROOT . "/assets/sql/$file.create.sql"
+            ];
+
+            foreach($paths as $path) {
+                if (file_exists($path)) {
+                    return $path;
+                }
+            }
+
+            $this->fail("Arquivo sql não encontrado $file");
         }
 
-        // Procura na pasta geral de teste do aplicativo
-        if (strpos(TEST_ROOT, '/modules') !== false) {
-            $path = substr(TEST_ROOT, 0, strpos(TEST_ROOT, '/modules')) . "/tests/assets/sql/$file";
-            if (file_exists($path)) {
-                return $path;
+        if ($sqlAction === self::SQL_DROP) {
+            // Procura primeiro na pasta do modulo caso queria substituir a do geral
+            if (strpos(TEST_ROOT, '/modules') !== false) {
+                $modulePath = substr(TEST_ROOT, 0, strpos(TEST_ROOT, '/modules'));
+                $paths[] = "$modulePath/tests/assets/sql/$file.drop.sql";
             }
-            $path = substr(TEST_ROOT, 0, strpos(TEST_ROOT, '/modules')) . "/test/assets/sql/$file";
-            if (file_exists($path)) {
-                return $path;
+
+            // Procura na pasta geral de teste do aplicativo
+            $paths = [
+                TEST_ROOT . "/assets/sql/$file.drop.sql"
+            ];
+
+            foreach($paths as $path) {
+                if (file_exists($path)) {
+                    return $path;
+                }
             }
+
         }
 
-        $this->fail("Arquivo sql não encontrado em $path");
+        $this->fail("Action não definido $sqlAction");
+
+        return null;
     }
 
     /**
-     * @return BaseTestCase
+     * @param array $tables
+     * @return AbstractTestCase
      */
-    public function dropTables($tables = null)
+    public function dropTables(array $tables = null)
     {
         // Não deixa executar em produção
         if (APPLICATION_ENV !== 'testing') {
@@ -136,14 +174,10 @@ class AbstractTestCase extends TestCase
         }
 
         if (!empty($tables)) {
-            // Verifica se existem as tabelas
-            foreach($tables as $tbl) {
-                $this->getSqlFile("$tbl.drop.sql");
-            }
 
-            // Desabilita os indices e cosntrains para não dar erro
+            // Desabilita os indices e constrains para não dar erro
             // ao apagar uma tabela com foreign key
-            // No mundo real isso é inviávei, mas nos teste podemos
+            // No mundo real isso é inviável, mas nos testes podemos
             // ignorar as foreign keys APÓS os testes
             $this->getAdapter()->query('SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;');
             $this->getAdapter()->query('SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;');
@@ -151,7 +185,14 @@ class AbstractTestCase extends TestCase
 
             // Recupera o script para remover as tabelas
             foreach($tables as $tbl) {
-                $this->getAdapter()->query(file_get_contents($this->getSqlFile("$tbl.drop.sql")));
+                $tbl = $this->getSqlFile($tbl, self::SQL_DROP);
+                if ($tbl === false) {
+                    $dropCommand = "DROP TABLE IF EXISTS $tbl;";
+                } else {
+                    $dropCommand = file_get_contents($tbl);
+                }
+
+                $this->getAdapter()->query($dropCommand);
             }
 
             $this->getAdapter()->query('SET SQL_MODE=@OLD_SQL_MODE;');
@@ -164,17 +205,23 @@ class AbstractTestCase extends TestCase
 
     /**
      *
-     * @param array $rows
      * @param string  $table
-     * @throws Exception
+     * @param array $rows
+     * @throws \Exception
      *
-     * @return BaseTestCase
+     * @return AbstractTestCase
      */
-    public function insertRows($rows, $table)
+    public function insertRows($table, $rows)
     {
         // Não deixa executar em produção
         if (APPLICATION_ENV !== 'testing') {
             $this->fail('Só é possível executar insertRows() em testing');
+        }
+
+        if (is_array($table)) {
+            $t = $rows;
+            $rows = $table;
+            $table = $t;
         }
 
         if (is_string($table)) {
@@ -339,7 +386,7 @@ class AbstractTestCase extends TestCase
      *
      * @param array $tables
      *
-     * @return BaseTestCase
+     * @return AbstractTestCase
      */
     public function setTables($tables)
     {

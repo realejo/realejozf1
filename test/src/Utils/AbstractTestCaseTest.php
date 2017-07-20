@@ -6,7 +6,7 @@ use RealejoZf1\Utils\AbstractTestCase as AbstractClass;
 /**
  * Token test case.
  */
-class AbstractTestCase extends AbstractClass
+class AbstractTestCaseTest extends AbstractClass
 {
 
     /**
