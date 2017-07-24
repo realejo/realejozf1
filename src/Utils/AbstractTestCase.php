@@ -119,10 +119,8 @@ class AbstractTestCase extends TestCase
             }
 
             // Procura na pasta geral de teste do aplicativo
-            $paths = [
-                TEST_ROOT . "/assets/sql/$file.sql",
-                TEST_ROOT . "/assets/sql/$file.create.sql"
-            ];
+            $paths[] = TEST_ROOT . "/assets/sql/$file.sql";
+            $paths[] = TEST_ROOT . "/assets/sql/$file.create.sql";
 
             foreach($paths as $path) {
                 if (file_exists($path)) {
@@ -151,6 +149,7 @@ class AbstractTestCase extends TestCase
                 }
             }
 
+            return false;
         }
 
         $this->fail("Action não definido $sqlAction");
@@ -185,11 +184,11 @@ class AbstractTestCase extends TestCase
 
             // Recupera o script para remover as tabelas
             foreach($tables as $tbl) {
-                $tbl = $this->getSqlFile($tbl, self::SQL_DROP);
-                if ($tbl === false) {
+                $tblFile = $this->getSqlFile($tbl, self::SQL_DROP);
+                if ($tblFile === false) {
                     $dropCommand = "DROP TABLE IF EXISTS $tbl;";
                 } else {
-                    $dropCommand = file_get_contents($tbl);
+                    $dropCommand = file_get_contents($tblFile);
                 }
 
                 $this->getAdapter()->query($dropCommand);
