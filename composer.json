@@ -6,7 +6,7 @@
   "prefer-stable": true,
   "require": {
     "realejo/library-zf1": "~1.5",
-    "zendframework/zend-hydrator": "~2.0",
+    "zendframework/zend-hydrator": "~3.0",
     "zendframework/zendframework1": "~1.12"
   },
   "require-dev": {
